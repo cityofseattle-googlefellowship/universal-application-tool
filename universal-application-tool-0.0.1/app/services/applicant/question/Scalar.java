@@ -27,6 +27,7 @@ public enum Scalar {
   LINE2("address line 2", ScalarType.STRING),
   MIDDLE_NAME("middle name", ScalarType.STRING),
   NUMBER("number", ScalarType.LONG),
+  PHONE_NUMBER("phone number", ScalarType.STRING),
   SELECTION("selection", ScalarType.LIST_OF_STRINGS),
   STATE("state", ScalarType.STRING),
   STREET("street", ScalarType.STRING),
@@ -91,6 +92,9 @@ public enum Scalar {
   private static final ImmutableMap<Scalar, ScalarType> NUMBER_SCALARS =
       ImmutableMap.of(NUMBER, ScalarType.LONG);
 
+  private static final ImmutableMap<Scalar, ScalarType> PHONE_NUMBER_SCALARS =
+          ImmutableMap.of(PHONE_NUMBER, ScalarType.STRING);
+
   private static final ImmutableMap<Scalar, ScalarType> SINGLE_SELECT_SCALARS =
       ImmutableMap.of(SELECTION, ScalarType.STRING);
 
@@ -125,6 +129,8 @@ public enum Scalar {
         return NAME_SCALARS;
       case NUMBER:
         return NUMBER_SCALARS;
+      case PHONENUMBER:
+        return PHONE_NUMBER_SCALARS;
       case TEXT:
         return TEXT_SCALARS;
 

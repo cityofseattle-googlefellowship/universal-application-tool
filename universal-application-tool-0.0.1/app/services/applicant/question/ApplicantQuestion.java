@@ -171,6 +171,8 @@ public class ApplicantQuestion {
     return new NumberQuestion(this);
   }
 
+  public PhoneNumberQuestion createPhoneNumberQuestion() { return new PhoneNumberQuestion(this); }
+
   public EnumeratorQuestion createEnumeratorQuestion() {
     return new EnumeratorQuestion(this);
   }
@@ -199,6 +201,8 @@ public class ApplicantQuestion {
         return createNameQuestion();
       case NUMBER:
         return createNumberQuestion();
+      case PHONENUMBER:
+        return createPhoneNumberQuestion();
       case DROPDOWN: // fallthrough to RADIO_BUTTON
       case RADIO_BUTTON:
         return createSingleSelectQuestion();

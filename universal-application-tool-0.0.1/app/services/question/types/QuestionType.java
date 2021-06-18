@@ -12,6 +12,7 @@ public enum QuestionType {
   FILEUPLOAD(false),
   NAME(false),
   NUMBER(false),
+  PHONENUMBER(false),
   RADIO_BUTTON(true),
   TEXT(false);
 

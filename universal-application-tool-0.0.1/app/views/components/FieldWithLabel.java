@@ -24,7 +24,7 @@ import views.style.Styles;
 
 public class FieldWithLabel {
   private static final ImmutableSet<String> STRING_TYPES =
-      ImmutableSet.of("text", "checkbox", "radio", "date", "email");
+      ImmutableSet.of("text", "checkbox", "radio", "date", "email", "tel");
 
   protected Tag fieldTag;
   protected String fieldName = "";
