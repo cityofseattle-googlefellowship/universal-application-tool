@@ -6,7 +6,9 @@ export { AdminTranslations } from './admin_translations'
 export { AdminTIGroups } from './admin_ti_groups'
 export { ApplicantQuestions } from './applicant_questions'
 
-const { BASE_URL = 'http://civiform:9000', TEST_USER_LOGIN = '', TEST_USER_PASSWORD = '' } = process.env
+export const { BASE_URL = 'http://civiform:9000', TEST_USER_LOGIN = '', TEST_USER_PASSWORD = '' } = process.env
+
+var assert = require('assert');
 
 export const isLocalDevEnvironment = () => {
   return BASE_URL === 'http://civiform:9000' || BASE_URL === 'http://localhost:9999';
@@ -23,6 +25,10 @@ export const startSession = async () => {
 
 export const endSession = async (browser: Browser) => {
   await browser.close();
+}
+
+export const gotoRootUrl = async (page: Page) => {
+  await page.goto(BASE_URL);
 }
 
 export const gotoEndpoint = async (page: Page, endpoint: string) => {
@@ -88,7 +94,57 @@ export const selectApplicantLanguage = async (page: Page, language: string) => {
   expect(maybeProgramIndexPage).toMatch(programIndexRegex);
 }
 
+//getMethods = (obj) => Object.getOwnPropertyNames(obj).filter(item => typeof obj[item] === 'function');
+
+export const getUserId = async (page: Page) => {
+  let url = page.url();
+  await gotoEndpoint(page, '/users/me');
+  let user_id = await page.innerText('#applicant-id');
+
+  await page.goto(url);
+
+  return user_id;
+}
+
+export const loginWithSimulatedIdcs = async (page: Page) => {
+  await page.click('#idcs');
+
+  let pg_source = await page.content();
+
+  if (pg_source.includes("Enter any login")) {
+    await page.click('css=[name=login]');
+    await page.keyboard.type('username');
+    await page.click('css=[name=password]');
+    await page.keyboard.type('password');
+
+    await page.click('.login-submit');
+  }
+
+  await page.click('.login-submit');
+}
+
 export const dropTables = async (page: Page) => {
   await page.goto(BASE_URL + '/dev/seed');
   await page.click("#clear");
 }
+
+export const assertEndpointEquals = async (page: Page, endpoint: string) => {
+  let url = await page.url();
+  let d_url = BASE_URL.concat(endpoint);
+
+  assert.equal(url, d_url);
+}
+
+export const assertPageIncludes = async (page: Page, substring: string) => {
+  let pg_source = await page.content();
+  assert(pg_source.includes(substring));
+}
+
+//const getMethods = (obj) => {
+//  let properties = new Set()
+//  let currentObj = obj
+//  do {
+//    Object.getOwnPropertyNames(currentObj).map(item => properties.add(item))
+//  } while ((currentObj = Object.getPrototypeOf(currentObj)))
+//  return [...properties.keys()].filter(item => typeof obj[item] === 'function')
+//}
